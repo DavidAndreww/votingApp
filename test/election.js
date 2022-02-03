@@ -10,23 +10,16 @@ contract('Election', function(accounts) { //  gets all accounts from users on th
     })
   })
 
-  it('Each Candidate has unique ID', () => {
-    return Election.deployed().then(async instance => {
-      const idOne = await instance.candidates(1).then(i => i[0].toString())
-      const idTwo = await instance.candidates(2).then(i => i[0].toString())
-      return idOne != idTwo ? true : false
-    }).then(ids => {
-      assert.isTrue(ids)
-    })
-  })
+  it('Each Candidate has correct values', async () => {
+    const electionInstance = await Election.deployed()
+    const candidate1 = await electionInstance.candidates(1)
+    const candidate2 = await electionInstance.candidates(2)
 
-  it('Each Candidate vote count starts at 0', () => {
-    return Election.deployed().then(async instance => {
-      const voteCount1 = await instance.candidates(1).then(i => parseInt(i[2]))
-      const voteCount2 = await instance.candidates(2).then(i => parseInt(i[2]))
-      return voteCount1 === 0 && voteCount2 === 0 ? true : false
-    }).then(votes => {
-      assert.isTrue(votes)
-    })
+    assert.equal(candidate1[0], 1, 'contains the correct ID')
+    assert.equal(candidate1[1], 'Frankie Offenheimer', 'contains the correct name')
+    assert.equal(candidate1[2], 0, 'contains the correct votes count')
+    assert.equal(candidate2[0], 2, 'contains the correct ID')
+    assert.equal(candidate2[1], 'Tabitha Schmidt', 'contains the correct name')
+    assert.equal(candidate2[2], 0, 'contains the correct votes count')
   })
 }) 
