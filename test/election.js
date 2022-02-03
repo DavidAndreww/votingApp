@@ -1,6 +1,6 @@
 const Election = artifacts.require('./Election.sol')
 
-contract('Election', function(accounts) { //  gets all accounts from users on the blockchain
+contract('Election', (accounts) => { //  gets all accounts from users on the blockchain
   
   it('initializes with two candidates', () => {
     return Election.deployed().then( instance => {
