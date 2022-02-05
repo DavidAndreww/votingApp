@@ -20,14 +20,17 @@ App = {
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       web3 = new Web3(App.web3Provider);
     }
+    console.log(web3)
     return App.initContract();
   },
 
+  // loads contract to front end application to be interacted with
   initContract: function() {
+    // Instance of the contract
     $.getJSON("Election.json", function(election) {
       // Instantiate a new truffle contract from the artifact
       App.contracts.Election = TruffleContract(election);
-      // Connect provider to interact with contract
+      // Connect provider to interact with contract (provider created in initWeb3 fn)
       App.contracts.Election.setProvider(App.web3Provider);
 
       App.listenForEvents();
@@ -53,6 +56,7 @@ App = {
     });
   },
 
+  // render content to page
   render: function() {
     var electionInstance;
     var loader = $("#loader");
@@ -61,7 +65,7 @@ App = {
     loader.show();
     content.hide();
 
-    // Load account data
+    // Load account data that we're connected to blockchain with
     web3.eth.getCoinbase(function(err, account) {
       if (err === null) {
         App.account = account;
