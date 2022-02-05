@@ -17,10 +17,11 @@ App = {
       web3 = new Web3(web3.currentProvider);
     } else {
       // Specify default instance if no web3 instance provided
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      App.web3Provider = new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545');
       web3 = new Web3(App.web3Provider);
     }
-    console.log(web3)
+    console.log('App Web3 =>', App.web3Provider)
+    console.log('Web 3.0 =>', web3)
     return App.initContract();
   },
 
@@ -45,14 +46,15 @@ App = {
       // Restart Chrome if you are unable to receive this event
       // This is a known issue with Metamask
       // https://github.com/MetaMask/metamask-extension/issues/2393
-      instance.votedEvent({}, {
-        fromBlock: 0,
-        toBlock: 'latest'
-      }).watch(function(error, event) {
-        console.log("event triggered", event)
-        // Reload when a new vote is recorded
-        App.render();
-      });
+      console.log('Instance => ', instance)
+      // instance.votedEvent({}, {
+      //   fromBlock: 0,
+      //   toBlock: 'latest'
+      // }).watch(function(error, event) {
+      //   console.log("event triggered", event)
+      //   // Reload when a new vote is recorded
+      //   App.render();
+      // });
     });
   },
 
@@ -99,7 +101,7 @@ App = {
           candidatesSelect.append(candidateOption);
         });
       }
-      return electionInstance.voters(App.account);
+      // return electionInstance.voters(App.account);
     }).then(function(hasVoted) {
       // Do not allow a user to vote
       if(hasVoted) {
@@ -114,15 +116,16 @@ App = {
 
   castVote: function() {
     var candidateId = $('#candidatesSelect').val();
-    App.contracts.Election.deployed().then(function(instance) {
-      return instance.vote(candidateId, { from: App.account });
-    }).then(function(result) {
-      // Wait for votes to update
-      $("#content").hide();
-      $("#loader").show();
-    }).catch(function(err) {
-      console.error(err);
-    });
+    console.log(candidateId)
+    // App.contracts.Election.deployed().then(function(instance) {
+    //   return instance.vote(candidateId, { from: App.account });
+    // }).then(function(result) {
+    //   // Wait for votes to update
+    //   $("#content").hide();
+    //   $("#loader").show();
+    // }).catch(function(err) {
+    //   console.error(err);
+    // });
   }
 };
 
